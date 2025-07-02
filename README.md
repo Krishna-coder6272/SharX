@@ -1,6 +1,5 @@
 # SharX - Advanced SMB Brute Force Tool
 
-![SharX Logo](https://raw.githubusercontent.com/Krishna-coder6272/SharX/main/logo.png)  <!-- Optional -->
 
 ---
 
