@@ -14,6 +14,7 @@ SharX is an advanced SMB brute force tool designed to scan targets for open SMB 
 - CSV logging of valid credentials
 - Basic SMB share enumeration exploit
 - Easy command-line interface
+- Create your own username:password lists using passgen in modules 
 
 ---
 
