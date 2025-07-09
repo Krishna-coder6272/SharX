@@ -43,7 +43,10 @@ python3 sharx.py 10.10.116.59 -w wordlists/common.txt -t 5
 
 
 ## 😇 AUTHOR
-Krishna Sahu
+- Krishna Sahu
+- Cybersecurity Intern |Red Teamer | Python Developer
+- LinkedIn: https://www.linkedin.com/krishna-sahu-66a1b7275/
+
 
 ---
 
