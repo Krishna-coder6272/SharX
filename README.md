@@ -23,7 +23,7 @@ Make sure you have Python 3 installed along with the required dependencies.
 
 Install dependencies with:
 
-``bash
+```
 pip install -r requirements.txt
 ```
 
