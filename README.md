@@ -18,14 +18,16 @@ SharX is an advanced SMB brute force tool designed to scan targets for open SMB 
 
 ---
 
+
+
+
+
 ## 💯 Installation
 Make sure you have Python 3 installed along with the required dependencies.
 
 Install dependencies with:
 
-```
-pip install -r requirements.txt
-```
+- pip install requirements.txt
 
 
 ---
